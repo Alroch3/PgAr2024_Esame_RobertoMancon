@@ -4,6 +4,7 @@ public class InterazioneUtente {
 
 
     private static final String MSG_INSERISCI_NUM_GIOCATORI = "Inserisci il numero di giocatori: ";
+    private static final String LETTERE_PER_MUOVERSI = "wasd";
 
     public static int scegliNumGiocatori(){
         return InputData.readIntegerBetween(MSG_INSERISCI_NUM_GIOCATORI, 4, 7);
@@ -11,6 +12,10 @@ public class InterazioneUtente {
 
     public static String inserisciNomeGiocatore(int numGiocatore) {
         return InputData.readNonEmptyString(String.format("Inserisci il nome del giocatore %d: ", numGiocatore), false);
+    }
+
+    public static char inserisciDirezioneMovimento() {
+        return InputData.readChar("Inserisci il tasto per muoverti (w - a - s - d): ", LETTERE_PER_MUOVERSI);
     }
 
     /*

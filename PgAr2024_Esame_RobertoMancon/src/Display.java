@@ -5,16 +5,19 @@ public class Display {
             for(int j = 0; j < 6; ++j){
                 System.out.print(mostraElementoSaloon(saloon[i][j]) + " | ");
             }
-            System.out.print("\n------------------------\n");
+            System.out.print("\n-----------------------------\n");
         }
     }
     
 
     public static String mostraElementoSaloon(String e){
-        if(e == null){
-            return " ";
+        if(e.equals("OST")){
+            return String.format("%-2s", "X");
         }
-        return e;            //da modificare
+        if(e.equals("")){
+            return String.format("%-2s", " ");
+        }    
+        return String.format("%-2s", e);    
     }
 
 

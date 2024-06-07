@@ -32,6 +32,22 @@ public class Giocatore {
         this.ruolo = ruolo;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getPuntiFerita() {
+        return puntiFerita;
+    }
+
+    public void setPuntiFerita(int puntiFerita) {
+        this.puntiFerita = puntiFerita;
+    }
+
     @Override
     public String toString() {
         return "Nome: " + nome + " - Ruolo: " + ruolo + " - PF: " + puntiFerita + " - Descrizione: " + descrizione; 
