@@ -19,6 +19,9 @@ public class Partita {
         
         //Display.mostraSaloon(saloon);
         aggiungiGiocatori();
+        Mazzo mazzo = new Mazzo();
+        mazzo.creaMazzo();
+        mazzo.mescolaMazzo();
         
     }
 
