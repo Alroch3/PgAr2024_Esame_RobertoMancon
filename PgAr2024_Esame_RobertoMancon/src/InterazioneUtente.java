@@ -9,6 +9,10 @@ public class InterazioneUtente {
         return InputData.readIntegerBetween(MSG_INSERISCI_NUM_GIOCATORI, 4, 7);
     }
 
+    public static String inserisciNomeGiocatore(int numGiocatore) {
+        return InputData.readNonEmptyString(String.format("Inserisci il nome del giocatore %d: ", numGiocatore), false);
+    }
+
     /*
     private static final String OPZIONI[] = {
         "Mappa da 5",
