@@ -2,16 +2,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import it.kibo.fp.lib.InputData;
 import it.kibo.fp.lib.RandomDraws;
 
 public class Partita {
     private static final String[] RUOLI_GIOCATORI = {"Fuorilegge", "Rinnegato", "Fuorilegge", "Vice", "Fuorilegge", "Vice"};            //non è presente lo sceriffo perchè è sempre inserito come primo
 
-    private ArrayList<String> ruoliGiocatori = new ArrayList<>();
+    private static ArrayList<String> ruoliGiocatori = new ArrayList<>();
 
-    private int numGiocatori;
-    private LinkedList<Giocatore> listaGiocatori = new LinkedList<>();
-    private String saloon[][] = {
+    private static int numGiocatori;
+    private static LinkedList<Giocatore> listaGiocatori = new LinkedList<>();
+    private static String saloon[][] = {
         {"","","","","",""},
         {"","OST","","","",""},
         {"","","","","","OST"},
@@ -21,56 +22,89 @@ public class Partita {
     };
 
 
-    public void gioco(){
+    public static void gioco(){
         //Display.mostraIntroduzione();
         numGiocatori = InterazioneUtente.scegliNumGiocatori();
         inizializzaRuoliGiocatore();
         
-        Display.mostraSaloon(saloon);
-        aggiungiGiocatori();
+        //Display.mostraSaloon(saloon);
+        
         Mazzo mazzo = new Mazzo();
         mazzo.creaMazzo();
         mazzo.mescolaMazzo();
+
+        aggiungiGiocatori(mazzo);
+        
         addGiocatoriSaloon();
         Display.mostraSaloon(saloon);
-        for(int i = 0; i < 5; ++i){
-            muoviGiocatoreInSaloon(listaGiocatori.get(0).getPuntiFerita(), 0);
-            Display.mostraSaloon(saloon);
-        }
-        for(int i = 0; i < 5; ++i){
-            muoviGiocatoreInSaloon(listaGiocatori.get(1).getPuntiFerita(), 1);
-            Display.mostraSaloon(saloon);
-        }
+        sceltaMenu(listaGiocatori.get(0));
+
         
     }
 
+    private static void sceltaMenu(Giocatore g){
+        int scelta = InterazioneUtente.scegliDaMenu();
+        switch (scelta) {
+            case 1:
+                int numPassi = InterazioneUtente.ottieniNumPassi(g.getPuntiFerita());
+                for(int i = 0; i < numPassi; ++i){
+                    muoviGiocatoreInSaloon(g.getPuntiFerita(), g.getNome(),listaGiocatori.indexOf(g));
+                    Display.mostraSaloon(saloon);
+                }
+                break;
+            case 2:
+                System.out.println(g.toStringCartePossedute());
+                break;
+            case 3:
+                System.out.println(g.toStringCarteEquip());
+                break;
+            case 4:
+                g.equipaggiaCarta();
+                break;
+            case 5:
+                g.giocaCarta();
+                break;
+            default:
+                break;
+        }
+    }
+
     // TRATTAMENTO GIOCATORI
-    private void inizializzaRuoliGiocatore(){
+    private static void inizializzaRuoliGiocatore(){
         for(int i = 0; i < numGiocatori -1; ++i){
             ruoliGiocatori.add(RUOLI_GIOCATORI[i]);
         }
         Collections.shuffle(ruoliGiocatori);
         ruoliGiocatori.addFirst("Sceriffo");
-        for(int i = 0; i < ruoliGiocatori.size(); ++i){
-            System.out.println(ruoliGiocatori.get(i));
-        }
     }
 
-    private void aggiungiGiocatori(){
+    private static void aggiungiGiocatori(Mazzo mazzoPrincipale){
         Xml.leggiPersonaggi(numGiocatori, listaGiocatori);          //assegno i personaggi in ordine come nell'XML 
         Collections.shuffle(listaGiocatori);                        //mischio per ottenere un ordine casuale
 
         for(int i = 0; i < numGiocatori; ++i){
             if(i == 0){
                 listaGiocatori.get(i).aggiornaPF(+1);               //lo sceriffo ha pf sempre +1
+                System.out.println(listaGiocatori.get(0).getNome() + " sei lo Sceriffo");
             }
             listaGiocatori.get(i).setRuolo(ruoliGiocatori.get(i));  //assegno il ruolo: Sceriffo, ecc..
-            System.out.println(listaGiocatori.get(i).toString());           //SOLO DEBUG
+            pescaggioCarta(listaGiocatori.get(i), mazzoPrincipale, 2);
+        }
+    }
+
+    //PESCAGGIO CARTE
+    private static void pescaggioCarta(Giocatore g, Mazzo mazzoPrincipale, int numCarteDaPescare){
+        for(int i = 0; i < numCarteDaPescare; ++i){
+            Display.msgMostraCarteDaPescare(g.getNome(), numCarteDaPescare - i);
+            char scelta = InterazioneUtente.msgPescaCarta(g.getNome());
+            if(scelta == 'p'){
+                g.aggiungiCarte(mazzoPrincipale);
+            }
         }
     }
 
     // INSERIMENTO GIOCATORI NELLA MATRICE
-    private void addGiocatoriSaloon(){
+    private static void addGiocatoriSaloon(){
         for(int i = 0; i < numGiocatori; ++i){
             int rigaCas, colonnaCas;
             do {
@@ -83,8 +117,8 @@ public class Partita {
     }
 
     //MOVIMENTO GIOCATORE NELLA MATRICE
-    private void muoviGiocatoreInSaloon(int numPassi, int numGiocatore){
-        System.out.printf("Giocatore %d, puoi fare %d passi (NON E' CONSENTITO ANDARE IN DIAGONALE)\n", numGiocatore, numPassi);          //DA METTERE IN DISPLAY
+    private static void muoviGiocatoreInSaloon(int numPassi, String nomeGiocatore, int numGiocatore){
+        System.out.printf("Giocatore %s (NON E' CONSENTITO ANDARE IN DIAGONALE)\n", nomeGiocatore, numPassi);          //DA METTERE IN DISPLAY
         int[] posGioc = posizioneGiocatore(numGiocatore);
         boolean spostRiuscito = false;
         while(!spostRiuscito){
@@ -111,7 +145,7 @@ public class Partita {
         }
     }
 
-    public int[] posizioneGiocatore (int numGiocatore){
+    public static int[] posizioneGiocatore (int numGiocatore){
         for(int i = 0; i < saloon.length; ++i){
             for(int j = 0; j < saloon[0].length; ++j){
                 if(saloon[i][j].equals(String.format("G" + (numGiocatore+1)))){
@@ -122,7 +156,7 @@ public class Partita {
         return null;
     }
 
-    public boolean spostaElemento(String[][] saloon, int rigaOrigine, int colonnaOrigine, int rigaDestinazione, int colonnaDestinazione) {
+    public static boolean spostaElemento(String[][] saloon, int rigaOrigine, int colonnaOrigine, int rigaDestinazione, int colonnaDestinazione) {
         if (rigaOrigine >= 0 && rigaOrigine < saloon.length && colonnaOrigine >= 0 && colonnaOrigine < saloon[rigaOrigine].length &&
             rigaDestinazione >= 0 && rigaDestinazione < saloon.length && colonnaDestinazione >= 0 && colonnaDestinazione < saloon[rigaDestinazione].length) {
 
@@ -140,9 +174,7 @@ public class Partita {
         }
     }
 
-    private void muoviGiocatore(){
-
-    }
-
-    
+    public static void calcolaDistanza(int numAttaccante, int numAttaccato) {
+        
+    }    
 }

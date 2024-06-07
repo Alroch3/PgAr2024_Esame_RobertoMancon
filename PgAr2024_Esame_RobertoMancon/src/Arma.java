@@ -7,6 +7,10 @@ public class Arma extends Carta{
         this.distanzaAttacco = distanzaAttacco;
     }
 
+    public int getDistanzaAttacco() {
+        return distanzaAttacco;
+    }
+    
     @Override
     public String toString() {
         return super.toString() + " - Distanza attacco: " + distanzaAttacco;

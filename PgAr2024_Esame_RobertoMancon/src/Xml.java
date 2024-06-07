@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Stack;
 
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
@@ -51,7 +52,7 @@ public class Xml {
         }
     }
 
-    public static void creaMazzo(LinkedList<Carta> mazzo){
+    public static void creaMazzo(Stack<Carta> mazzo){
 
         try (BufferedInputStream reader = new BufferedInputStream(new FileInputStream(FILENAME))) {
             xmlif = XMLInputFactory.newInstance();
@@ -107,7 +108,7 @@ public class Xml {
                         }else{
                             c = new Carta(valore, seme, equipaggiabile, nome, descrizione);
                         }
-                        mazzo.add(c);
+                        mazzo.push(c);
                     }
                 }
             }

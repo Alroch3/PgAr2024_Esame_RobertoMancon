@@ -13,9 +13,55 @@ public class Carta {
         this.descrizione = descrizione;
     }
 
+    public String getValore() {
+        return valore;
+    }
+
+    public void setValore(String valore) {
+        this.valore = valore;
+    }
+
+    public String getSeme() {
+        return seme;
+    }
+
+    public void setSeme(String seme) {
+        this.seme = seme;
+    }
+
+    public boolean isEquipaggiabile() {
+        return equipaggiabile;
+    }
+
+    public void setEquipaggiabile(boolean equipaggiabile) {
+        this.equipaggiabile = equipaggiabile;
+    }
+
+    public String getNomeCarta() {
+        return nomeCarta;
+    }
+
+    public void setNomeCarta(String nomeCarta) {
+        this.nomeCarta = nomeCarta;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
     @Override
     public String toString() {
-        return "Valore: " + valore + " - Seme: " + seme + " - equipaggiabile: " + equipaggiabile + " - Nome Carta: " + nomeCarta + " - Descrizione: " + descrizione; 
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\n-------------------------------------------\n");
+        buffer.append("\t" + nomeCarta.toUpperCase() + "\n");
+        buffer.append(" " + descrizione + "\n");
+        buffer.append("" +  valore + " di " + seme + "\n");
+        buffer.append("---------------------------------------------\n");
+        return buffer.toString(); 
     }
 
     

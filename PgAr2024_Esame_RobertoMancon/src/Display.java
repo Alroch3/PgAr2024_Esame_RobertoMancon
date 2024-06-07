@@ -25,4 +25,20 @@ public class Display {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'mostraIntroduzione'");
     }
+
+
+    public static void msgMostraCarteDaPescare(String nome, int numCarte) {
+        System.out.printf("Giocatore %s devi pescare %d carte\n", nome, numCarte);
+    }
+
+    public static void msgNonPuoiEquipaggiare() {
+        System.out.println("Non puoi equipaggiare questa carta.\n Puoi equipaggiare solo un'arma alla volta e una sola carta con lo stesso nome");
+    }
+
+
+    public static void msgCartaEquipaggiata(String nomeCarta) {
+        System.out.printf("La carta %s è stata equipaggiata!", nomeCarta);
+    }
+
+
 }
